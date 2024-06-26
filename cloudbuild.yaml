@@ -14,7 +14,7 @@ steps:
     args:
       - '-c'
       - |
-        gcloud run deploy flask-app-prod \
+        gcloud run deploy flask-app-dev \
           --image gcr.io/my-project-daniel-261018/flaskapp:latest \
           --region us-central1 \
           --allow-unauthenticated
