@@ -1,0 +1,26 @@
+#CLOUDBUILD
+steps:
+  # step 1 buildando a imagem
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/my-project-daniel-261018/flaskapp:latest', '.']
+
+  # Step 2 push para registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/my-project-daniel-261018/flaskapp:latest']
+
+  # Step 3 deploy cloud run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud run deploy flask-app-prod \
+          --image gcr.io/my-project-daniel-261018/flaskapp:latest \
+          --region us-central1 \
+          --allow-unauthenticated
+
+images:
+  - 'gcr.io/my-project-daniel-261018/flaskapp:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
